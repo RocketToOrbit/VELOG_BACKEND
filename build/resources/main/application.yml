@@ -1,0 +1,20 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 12345678
+    driver-class-name: org.postgresql.Driver
+
+    jpa:
+      database: postgresql
+      hibernate:
+        ddl-auto: update
+
+      properties:
+        hibernate:
+          format_sql: true
+          default_batch_fetch_size: 100
+
+    logging:
+      level:
+        org.hibernate.SQL: debug
