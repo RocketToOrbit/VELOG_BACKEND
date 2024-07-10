@@ -1,16 +1,16 @@
 package xnova.velog.DOMAIN.auth.oauth2;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import xnova.velog.Entity.Member;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class KakaoApiClient implements OAuthApiClient {
@@ -66,5 +66,6 @@ public class KakaoApiClient implements OAuthApiClient {
         HttpEntity<?> request = new HttpEntity<>(body, httpHeaders);
 
         return restTemplate.postForObject(url, request, KakaoInfoResponse.class);
+
     }
 }

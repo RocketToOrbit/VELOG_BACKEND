@@ -5,19 +5,20 @@ spring:
     password: 12345678
     driver-class-name: org.postgresql.Driver
 
-    jpa:
-      database: postgresql
+  jpa:
+    database: postgresql
+    hibernate:
+      ddl-auto: create
+      show-sql: true
+
+    properties:
       hibernate:
-        ddl-auto: update
+        format_sql: true
+        default_batch_fetch_size: 100
 
-      properties:
-        hibernate:
-          format_sql: true
-          default_batch_fetch_size: 100
-
-    logging:
-      level:
-        org.hibernate.SQL: debug
+logging:
+  level:
+    org.hibernate.SQL: debug
 
 kakao:
   client-id: 9cec7f5cead1f91e62b0c77db222df8b
@@ -27,11 +28,10 @@ kakao:
     auth: https://kauth.kakao.com
     api: https://kapi.kakao.com
   provider:
-    authorization-uri: https://kauth.kakao.com/oauth/authorize # ?? ?? ??
-    token-uri: https://kauth.kakao.com/oauth/token # ?? ??? ?? ??? ??, ?? ???? ??? ??? ???? ????? ??
+    authorization-uri: https://kauth.kakao.com/oauth/authorize
+    token-uri: https://kauth.kakao.com/oauth/token
     user-info-uri: https://kapi.kakao.com/v2/user/me
     user-name-attribute: kakao_account
-
 
 jwt:
   secretKey: 6rmA7ZiE67mI64Ko67O0652867Kg64Sk65SV7YSw7Lu067KE67Kg7LmY66+87JiB7J2A6rmA64+Z7IugbGV0J3Nnb+yasOumrOuBvOumrOuyqOuhnOq3uOulvOunjOuTpOyWtOuztOyekOq5gO2YhOu5iOuCqOuztOudvOuyoOuEpOuUle2EsOy7tOuyhOuyoOy5mOuvvOyYgeydgOq5gOuPmeyLoGxldCdzZ2/smrDrpqzrgbzrpqzrsqjroZzqt7jrpbzrp4zrk6TslrTrs7TsnpA=

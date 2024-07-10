@@ -1,5 +1,6 @@
 package xnova.velog.DOMAIN.auth.oauth2;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import xnova.velog.Entity.Member;
 
@@ -8,6 +9,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Component
 public class RequestOAuthInfoService {
     private final Map<Member.OAuthProvider, OAuthApiClient> clients;
