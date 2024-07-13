@@ -7,6 +7,7 @@ import xnova.velog.Entity.Member;
 
 @Getter
 @JsonIgnoreProperties(ignoreUnknown = true)
+// 카카오 API로부터 받은 사용자 정보 응답을 매핑하기 위한 클래스
 public class KakaoInfoResponse implements OAuthInfoResponse {
 
     @JsonProperty("kakao_account")

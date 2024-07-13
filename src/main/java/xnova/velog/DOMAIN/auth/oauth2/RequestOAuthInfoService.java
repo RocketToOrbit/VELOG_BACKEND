@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Component
+// OAuth 제공자와 해당 클라이언트를 매핑
 public class RequestOAuthInfoService {
     private final Map<Member.OAuthProvider, OAuthApiClient> clients;
 
@@ -21,8 +22,8 @@ public class RequestOAuthInfoService {
     }
 
     public OAuthInfoResponse request(OAuthLoginParams params) {
-        OAuthApiClient client = clients.get(params.oAuthProvider());
-        String accessToken = client.requestAccessToken(params);
-        return client.requestOauthInfo(accessToken);
+        OAuthApiClient client = clients.get(params.oAuthProvider()); // 클라이언트 얻음
+        String accessToken = client.requestAccessToken(params); // 해당 클라어인트의 accessToken 얻음
+        return client.requestOauthInfo(accessToken); //accessToken을 이용하여, 사용자 정보를 받음
     }
 }
