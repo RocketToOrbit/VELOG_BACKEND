@@ -1,9 +1,10 @@
-package xnova.velog.DOMAIN.auth;
+package xnova.velog.DOMAIN.auth.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import xnova.velog.DOMAIN.auth.MemberRepository;
 import xnova.velog.DOMAIN.auth.jwt.AuthTokens;
 import xnova.velog.DOMAIN.auth.jwt.AuthTokensGenerator;
 import xnova.velog.DOMAIN.auth.oauth2.OAuthInfoResponse;
@@ -23,7 +24,6 @@ public class OAuthLoginService {
 
     //
     public AuthTokens login(OAuthLoginParams params) {
-        log.info("params: {}", params);
         OAuthInfoResponse oAuthInfoResponse = requestOAuthInfoService.request(params); // OAuth 제공자로부터 사용자 정보를 요청
         Long memberId = findOrCreateMember(oAuthInfoResponse); // 사용자 정보를 기반으로 새로운 사용자를 생성하거나 기존 사용자를 찾음
         return authTokensGenerator.generate(memberId); // JWT 토큰을 생성하여 반환
@@ -37,11 +37,18 @@ public class OAuthLoginService {
 
     @Transactional
     public Long newMember(OAuthInfoResponse oAuthInfoResponse) {
-        Member member = Member.builder() // 새로운 Member 객체를 빌더 패턴을 사용하여 생성
-                .email(oAuthInfoResponse.getEmail())
-                .oAuthProvider(oAuthInfoResponse.getOAuthProvider())
-                .build();
+        log.info("새로운 회원 생성 시도");
+        try {
+            Member member = Member.builder() // 새로운 Member 객체를 빌더 패턴을 사용하여 생성
+                    .email(oAuthInfoResponse.getEmail())
+                    .oAuthProvider(oAuthInfoResponse.getOAuthProvider())
+                    .build();
 
-        return memberRepository.save(member).getId(); // 새로운 사용자를 데이터베이스에 저장하고, 저장된 사용자의 ID를 반환
+            Member savedMember = memberRepository.save(member);
+            return savedMember.getId(); // 새로운 사용자를 데이터베이스에 저장하고, 저장된 사용자의 ID를 반환
+        } catch (Exception e) {
+            log.error("회원 저장 중 오류 발생", e);
+            throw e;
+        }
     }
 }

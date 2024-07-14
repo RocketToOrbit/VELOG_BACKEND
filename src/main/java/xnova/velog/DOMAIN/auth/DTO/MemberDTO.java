@@ -24,7 +24,6 @@ public class MemberDTO {
         return MemberDTO.builder()
                 .memberUUID(member.getMemberUUID())
                 .email(member.getEmail())
-                .name(member.getName())
                 .nickname(member.getNickname())
                 .velogId(member.getVelogId())
                 .follow(member.getFollow())
