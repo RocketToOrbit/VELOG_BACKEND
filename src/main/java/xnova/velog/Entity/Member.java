@@ -30,9 +30,6 @@ public class Member extends BaseEntity {
     private String nickname;
 
     @Column
-    private String name;
-
-    @Column
     private String velogId;
 
     @Column
@@ -42,6 +39,7 @@ public class Member extends BaseEntity {
     private String follower;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private OAuthProvider oAuthProvider;
 
     @Column

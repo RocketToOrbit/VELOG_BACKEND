@@ -1,13 +1,14 @@
 package xnova.velog.DOMAIN.auth.DTO;
 
+
 import lombok.*;
 import xnova.velog.Entity.Member;
 
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor // ê¸°ë³¸ìƒì„±ì
-@AllArgsConstructor // ëª¨ë“  í•„ë“œë¥¼ ë§¤ê°œ ë³€ìˆ˜ë¡œ í•˜ëŠ” ìƒì„±ì
+@NoArgsConstructor // ±âº»»ı¼ºÀÚ
+@AllArgsConstructor // ¸ğµç ÇÊµå¸¦ ¸Å°³ º¯¼ö·Î ÇÏ´Â »ı¼ºÀÚ
 @Builder
 public class MemberDTO {
     private String memberUUID;
@@ -24,7 +25,6 @@ public class MemberDTO {
         return MemberDTO.builder()
                 .memberUUID(member.getMemberUUID())
                 .email(member.getEmail())
-                .name(member.getName())
                 .nickname(member.getNickname())
                 .velogId(member.getVelogId())
                 .follow(member.getFollow())

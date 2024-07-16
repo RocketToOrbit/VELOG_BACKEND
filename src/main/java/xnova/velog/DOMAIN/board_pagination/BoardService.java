@@ -18,7 +18,7 @@ public class BoardService {
         Pageable pageable = PageRequest.of(page, size);
         Page<Post> boardPage = boardRepository.findAll(pageable);
 
-        // Pagination ¡§∫∏ º≥¡§
+        // Pagination Ï†ïÎ≥¥ ÏÑ§Ï†ï
         BoardResponseDTO.PageResponseDTO.PaginationDTO pagination = new BoardResponseDTO.PageResponseDTO.PaginationDTO();
         pagination.setTotalPages(boardPage.getTotalPages());
         pagination.setTotalElements(boardPage.getTotalElements());
@@ -27,19 +27,19 @@ public class BoardService {
         pagination.setFirstPage(boardPage.isFirst());
         pagination.setLastPage(boardPage.isLast());
 
-        // Sort ¡§∫∏ º≥¡§
+        // Sort Ï†ïÎ≥¥ ÏÑ§Ï†ï
         BoardResponseDTO.PageResponseDTO.SortDTO sort = new BoardResponseDTO.PageResponseDTO.SortDTO();
         sort.setSorted(boardPage.getSort().isSorted());
         sort.setUnsorted(boardPage.getSort().isUnsorted());
         sort.setEmpty(boardPage.getSort().isEmpty());
 
-        // ¿¸√º ¿¿¥‰ DTO º≥¡§
+        // Ï†ÑÏ≤¥ ÏùëÎãµ DTO ÏÑ§Ï†ï
         BoardResponseDTO.PageResponseDTO<Post> responseData = new BoardResponseDTO.PageResponseDTO<>();
         responseData.setPagination(pagination);
         responseData.setSort(sort);
         responseData.setContent(boardPage.getContent());
 
-        // API ¿¿¥‰ º≥¡§
+        // API ÏùëÎãµ ÏÑ§Ï†ï
         BoardResponseDTO<BoardResponseDTO.PageResponseDTO<Post>> response = new BoardResponseDTO<>();
         response.setStatus("success");
         response.setMessage("Pagination response retrieved successfully");
