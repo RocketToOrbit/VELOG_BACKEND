@@ -1,10 +1,9 @@
-package xnova.velog.WEB;
+package xnova.velog.DOMAIN.auth;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import xnova.velog.DOMAIN.auth.MemberRepository;
 import xnova.velog.DOMAIN.auth.jwt.AuthTokensGenerator;
 import xnova.velog.Entity.Member;
 
