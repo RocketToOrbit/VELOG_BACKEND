@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class PostResponseDTO<T> {
+public class BoardResponseDTO<T> {
     private String status;
     private String message;
     private T data;

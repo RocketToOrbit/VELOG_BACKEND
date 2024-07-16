@@ -4,6 +4,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import xnova.velog.Entity.Post;
 
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface BoardRepository extends JpaRepository<Post, Long> {
     Page<Post> findAll(Pageable pageable);
 }
