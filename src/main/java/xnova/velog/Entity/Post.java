@@ -6,7 +6,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -28,16 +30,13 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @Column
+    @Column(nullable = false)
     private String title;
 
     @Column
-    private String tag;
+    private String imageUrl;
 
-    @Column
-    private String image;
-
-    @Column
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
     @Column
@@ -46,9 +45,13 @@ public class Post extends BaseEntity {
     @Column
     private int hits;
 
-    @Column
+    @Column(nullable = false)
     private String status;
 
     @OneToMany(mappedBy = "post")
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    private Set<TagMapping> tags = new HashSet<>();
+
 }
