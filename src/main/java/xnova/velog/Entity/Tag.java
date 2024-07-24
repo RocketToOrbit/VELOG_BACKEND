@@ -3,12 +3,13 @@ package xnova.velog.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // Ãß°¡µÈ ¾î³ëÅ×ÀÌ¼Ç
-@AllArgsConstructor // Ãß°¡µÈ ¾î³ëÅ×ÀÌ¼Ç
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // ì¶”ê°€ëœ ì–´ë…¸í…Œì´ì…˜
+@AllArgsConstructor // ì¶”ê°€ëœ ì–´ë…¸í…Œì´ì…˜
 @Builder
 @Getter
 @Setter
@@ -24,7 +25,7 @@ public class Tag extends BaseEntity {
     private String tagName;
 
     @OneToMany(mappedBy = "tag")
-    private Set<TagMapping> tagMapping = new HashSet<>();
+    private List<TagMapping> tagMapping = new ArrayList<>();
 
     public Tag(Long id, String tagName) {
         this.id = id;
