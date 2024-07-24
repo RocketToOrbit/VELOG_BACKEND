@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RestController;
 import xnova.velog.DOMAIN.board_pagination.DTO.PostResponseDTO;
 import xnova.velog.Entity.Post;
 
-
 @RestController
 public class PostController {
 
