@@ -3,22 +3,23 @@ package xnova.velog.DOMAIN.board_pagination;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import xnova.velog.DOMAIN.board_pagination.DTO.BoardResponseDTO;
+import xnova.velog.DOMAIN.board_pagination.DTO.PostResponseDTO;
 import xnova.velog.Entity.Post;
 
+
 @RestController
-public class BoardController {
+public class PostController {
 
-    private final BoardService boardService;
+    private final PostService postService;
 
-    public BoardController(BoardService postService) {
-        this.boardService = postService;
+    public PostController(PostService postService) {
+        this.postService = postService;
     }
 
     @GetMapping("/posts")
-    public BoardResponseDTO<BoardResponseDTO.PageResponseDTO<Post>> getPosts(
+    public PostResponseDTO<PostResponseDTO.PageResponseDTO<Post>> getPosts(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "30") int size) {
-        return boardService.getPosts(page, size);
+        return postService.getPosts(page, size);
     }
 }

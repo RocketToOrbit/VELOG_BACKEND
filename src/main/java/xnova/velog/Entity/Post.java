@@ -6,9 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Getter
@@ -21,10 +20,6 @@ public class Post extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "post_id")
     private Long postId;
-
-    @ManyToOne
-    @JoinColumn(name = "board_id")
-    private Board board;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
@@ -52,6 +47,8 @@ public class Post extends BaseEntity {
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private Set<TagMapping> tags = new HashSet<>();
+    private List<TagMapping> tags = new ArrayList<>();
 
+    @Column(nullable = false)
+    private String boardTitle;
 }

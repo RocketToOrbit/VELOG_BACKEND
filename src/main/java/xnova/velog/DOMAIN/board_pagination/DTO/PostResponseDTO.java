@@ -1,19 +1,24 @@
 package xnova.velog.DOMAIN.board_pagination.DTO;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
 @Getter
 @Setter
-public class BoardResponseDTO<T> {
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class PostResponseDTO<T> {
     private String status;
     private String message;
     private T data;
 
     @Getter
     @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     public static class PageResponseDTO<T> {
         private PaginationDTO pagination;
         private SortDTO sort;
@@ -21,6 +26,9 @@ public class BoardResponseDTO<T> {
 
         @Getter
         @Setter
+        @NoArgsConstructor
+        @AllArgsConstructor
+        @Builder
         public static class PaginationDTO {
             private int totalPages;
             private long totalElements;
@@ -32,6 +40,9 @@ public class BoardResponseDTO<T> {
 
         @Getter
         @Setter
+        @NoArgsConstructor
+        @AllArgsConstructor
+        @Builder
         public static class SortDTO {
             private boolean isSorted;
             private boolean isUnsorted;
