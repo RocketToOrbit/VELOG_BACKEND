@@ -6,8 +6,8 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // Ãß°¡µÈ ¾î³ëÅ×ÀÌ¼Ç
-@AllArgsConstructor // Ãß°¡µÈ ¾î³ëÅ×ÀÌ¼Ç
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½
+@AllArgsConstructor // ï¿½ß°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ì¼ï¿½
 @Builder
 @Getter
 @Setter

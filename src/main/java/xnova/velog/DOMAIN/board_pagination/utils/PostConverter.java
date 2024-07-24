@@ -5,7 +5,7 @@ import xnova.velog.DOMAIN.board_pagination.DTO.PostResponseDTO;
 import xnova.velog.Entity.Post;
 
 public class PostConverter {
-
+    // * : ?로 바꾸기
     public static PostResponseDTO<PostResponseDTO.PageResponseDTO<Post>> toPostResponseDTO(Page<Post> postPage) {
         PostResponseDTO.PageResponseDTO<Post> responseData = PostResponseDTO.PageResponseDTO.<Post>builder()
                 .pagination(PaginationUtils.createPagination(postPage))
