@@ -60,7 +60,7 @@ public class Post extends BaseEntity {
 
 
 
-    public static Post toUpdatePost(PostDTO postDTO) {
+    /*public static Post toUpdatePost(PostDTO postDTO) {
         Post post = new Post();
         post.setPostId(postDTO.getPost_id());
         post.setTitle(postDTO.getTitle());
@@ -116,5 +116,5 @@ public class Post extends BaseEntity {
                 .collect(Collectors.toSet());
         post.setTags(tags);
         return post;
-    }
+    }*/
 }
