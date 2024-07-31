@@ -19,29 +19,28 @@ public class PostController {
         return ResponseEntity.ok().body(postService.savePost(postDTO));
     }
 
-    /*@GetMapping("/{id}") //게시판 상세 조회
-    public String findById(@PathVariable Long id, Model model) {
-        postService.updateHits(id); //조회수 업로드
-        PostDTO postDTO = postService.findById(id);
-        model.addAttribute("post", postDTO);
-        return "detail";
+    @GetMapping("/{id}") //게시판 상세 조회
+    public ResponseEntity<PostDTO.Response> findById(@PathVariable Long id) {
+        postService.updateHits(id); //조회수 업데이트
+        PostDTO.Response postDTO = postService.findById(id);
+        return ResponseEntity.ok(postDTO);
     }
 
-    @GetMapping("/update/{id}") //수정된 게시판 보기
+    /*@GetMapping("/update/{id}") //수정된 게시판 보기
     public String updatedPost(@PathVariable("id") Long id, Model model){
         PostDTO postDTO = postService.findById(id); //수정된 정보를 DTO에 담아옴
         model.addAttribute("post", postDTO);
         return "modifying";
-    }
+    }*/
 
-    @PostMapping("/update") //게시판 수정하기
+    /*@PostMapping("/update") //게시판 수정하기
     public String updatePost(@RequestBody PostDTO postDTO, Model model) {
         PostDTO post = postService.update(postDTO);
         model.addAttribute("post", post);
         return "detail";
-    }
+    }*/
 
-    @GetMapping("/tempPosts") //임시저장된 게시물 목록 확인하기
+    /*@GetMapping("/tempPosts") //임시저장된 게시물 목록 확인하기
     public String getTempPosts(Model model) {
         List<PostDTO> tempPosts = postService.findAllTempPosts();
         model.addAttribute("tempPosts", tempPosts);

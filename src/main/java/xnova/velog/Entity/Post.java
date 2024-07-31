@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import xnova.velog.DOMAIN.post.PostDTO;
 import xnova.velog.DOMAIN.post.TagDTO;
-import xnova.velog.DOMAIN.post.TagMappingDTO;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -14,7 +13,6 @@ import java.util.stream.Collectors;
 
 @Entity
 @Getter
-@Setter
 @NoArgsConstructor //기본 생성자를 자동으로 생성
 @AllArgsConstructor //모든 필드를 인수로 가지는 생성자 자동 생성
 //모든 필드를 초기화하는 생성자가 필요할 경우 사용
@@ -52,69 +50,32 @@ public class Post extends BaseEntity {
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private List<TagMapping> tags = new ArrayList<>();
+    private List<Tag> tags = new ArrayList<>();
 
-    @Column(nullable = false)
-    private String boardTitle;
+    /*@Column(nullable = false)
+    private String boardTitle;*/
 
-
-
-
-    /*public static Post toUpdatePost(PostDTO postDTO) {
-        Post post = new Post();
-        post.setPostId(postDTO.getPost_id());
-        post.setTitle(postDTO.getTitle());
-        post.setContent(postDTO.getContent());
-        post.setLikes(postDTO.getLikes());
-        post.setHits(postDTO.getHits());
-        post.setStatus(postDTO.getStatus());
-        post.setMember(postDTO.getMember());
-        post.setTags(post.getTags());
-        return post;
+    @Builder
+    public Post(Long postId, String title, String imageUrl,
+                String content, int likes, int hits,
+                String status, Member member, List<Tag> tags) {
+        this.postId = postId;
+        this.title = title;
+        this.imageUrl = imageUrl;
+        this.content = content;
+        this.likes = likes;
+        this.hits = hits;
+        this.status = status;
+        this.member = member;
+        if (tags != null) {
+            this.tags = tags;
+        }
     }
 
-    public static Post toPost(PostDTO postDTO) {
-        Post post = new Post();
-        post.setTitle(postDTO.getTitle());
-        post.setContent(postDTO.getContent());
-        post.setLikes(0);
-        post.setHits(0);
-        post.setStatus(postDTO.getStatus());
-        post.setMember(postDTO.getMember());
-        postDTO.setTags(post.getTags().stream()
-                .map(tagMapping -> new TagMappingDTO(
-                        new TagDTO(tagMapping.getTag().getId(), tagMapping.getTag().getTagName())))
-                .collect(Collectors.toSet()));
-
-        post.setTags(postDTO.getTags().stream()
-                .map(tagMappingDTO -> {
-                    Tag tag = new Tag(postDTO.getTags(), postDTO.getTags().getClass().getName());
-                    return new TagMapping(post, tag);
-                        }).collect(Collectors.toSet()));*/
-
-        /*post.setTags(postDTO.getTags().stream()
-                .map(tagMappingDTO -> new TagMapping(post,
-                        new Tag(tagMappingDTO.getTag().getId(), tagMappingDTO.getTag().getTagName())
-                )).collect(Collectors.toSet()));
-
-
-        post.setImageUrl(postDTO.getImageUrl());
-
-        post.setTags(postDTO.getTags().stream()
-                .map(tagMappingDTO -> {
-                    Tag tag = new Tag(tagMappingDTO.getTag().getId(), tagMappingDTO.getTag().getTagName());
-                    return new TagMapping(post, tag);
-                }).collect(Collectors.toList()));
-
-        Set<TagMapping> tags = postDTO.getTags().stream()
-                .map(tagMappingDTO -> {
-                    Tag tag = new Tag();
-                    tag.setId(tagMappingDTO.getTag().getId());
-                    tag.setTagName(tagMappingDTO.getTag().getTagName());
-                    return new TagMapping(post, tag);
-                })
-                .collect(Collectors.toSet());
-        post.setTags(tags);
-        return post;
-    }*/
+    public void addTag(Tag tag) {
+        if (this.tags == null) {
+            this.tags = new ArrayList<>();
+        }
+        this.tags.add(tag);
+    }
 }

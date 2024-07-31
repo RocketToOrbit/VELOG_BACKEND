@@ -25,7 +25,7 @@ public class PostDTO {
         private String content;
         private String status;
         private Long memberId;
-        private List<TagDTO> tags;
+        private List<TagDTO.Request> tags;
     }
 
     @Getter
@@ -42,7 +42,7 @@ public class PostDTO {
         private int hits;
         private String status;
         private Member member;
-        private List<TagDTO> tags;
+        private List<TagDTO.Response> tags;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
 
@@ -57,7 +57,7 @@ public class PostDTO {
                     .status(post.getStatus())
                     .member(post.getMember())
                     .tags(post.getTags().stream()
-                            .map(tagMapping -> new TagDTO(tagMapping.getTag().getId(), tagMapping.getTag().getTagName()))
+                            .map(tag -> new TagDTO.Response(tag.getId(), tag.getTagName()))
                             .collect(Collectors.toList()))
                     .createdAt(LocalDateTime.now())
                     .updatedAt(LocalDateTime.now())

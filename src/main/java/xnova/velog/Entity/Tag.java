@@ -12,9 +12,8 @@ import java.util.Set;
 @AllArgsConstructor // 추가된 어노테이션
 @Builder
 @Getter
-@Setter
 @Entity
-@Table(name = "tag")
+@Table(name = "tag", uniqueConstraints = {@UniqueConstraint(columnNames = {"tagName"})})
 public class Tag extends BaseEntity {
     @Id
     @GeneratedValue
@@ -24,11 +23,15 @@ public class Tag extends BaseEntity {
     @Column(name = "tagName")
     private String tagName;
 
-    @OneToMany(mappedBy = "tag")
-    private List<TagMapping> tagMapping = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 
-    public Tag(Long id, String tagName) {
+
+    /*@Builder
+    public Tag(Long id, String tagName, Post post) {
         this.id = id;
         this.tagName = tagName;
-    }
+        this.post = post;
+    }*/
 }

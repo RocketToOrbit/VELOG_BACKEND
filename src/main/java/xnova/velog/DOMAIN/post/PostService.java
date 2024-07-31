@@ -8,7 +8,6 @@ import xnova.velog.DOMAIN.auth.MemberRepository;
 import xnova.velog.Entity.Member;
 import xnova.velog.Entity.Post;
 import xnova.velog.Entity.Tag;
-import xnova.velog.Entity.TagMapping;
 
 import java.util.List;
 import java.util.Optional;
@@ -20,13 +19,12 @@ import java.util.stream.Collectors;
 public class PostService {
     @Autowired
     private PostRepository postRepository;
-
     @Autowired
     private TagRepository tagRepository;
     @Autowired
     private MemberRepository memberRepository;
     @Autowired
-    private TagMappingRepository tagMappingRepository;
+    private TagService tagService;
 
     @Transactional
     public PostDTO.Response savePost(PostDTO.Request postRequest) {
@@ -35,7 +33,14 @@ public class PostService {
             throw new IllegalArgumentException("Status cannot be null");
         }
 
-        //Post 객체 생성 - 요청값에 따라서 상태 데이터에 대한 값은 다를 것임
+        // 회원 정보 조회 및 설정 - 없어도 무방할듯
+        Member member = memberRepository.findById(postRequest.getMemberId())
+                .orElseThrow(() -> new RuntimeException("cannot find member"));
+
+        //태그를 저장
+        //List<Tag> tags = tagService.saveTags(postRequest.getTags());
+
+        //post 객체를 생성
         Post post = Post.builder()
                 .title(postRequest.getTitle())
                 .imageUrl(postRequest.getImageUrl())
@@ -43,48 +48,35 @@ public class PostService {
                 .status(postRequest.getStatus())
                 .likes(0)
                 .hits(0)
+                .member(member)
                 .build();
+        //postRepository.save(post);
 
-        // 회원 정보 조회 및 설정
-        Member member = memberRepository.findById(postRequest.getMemberId())
-                .orElseThrow(() -> new RuntimeException("cannot find member"));
-
-        Post savedPost = postRepository.save(post);
-
-        // 태그 처리 및 저장
-        List<Tag> tags = postRequest.getTags().stream()
-                .map(tagDTO -> tagRepository.findById(tagDTO.getId())
-                        .orElseGet(() -> tagRepository.save(new Tag(null, tagDTO.getTagName()))))
-                .collect(Collectors.toList());
-        tagRepository.saveAll(tags);
-
-        //태그 배핑 저장
-        List<TagMapping> tagMappings = tags.stream()
-                .map(tag -> new TagMapping(savedPost, tag))
-                .collect(Collectors.toList());
+        List<Tag> tags = tagService.saveTagsWithPost(post, postRequest.getTags());
+        tags.forEach(post::addTag);
 
 
-        // 태그 매핑 설정
-        tagMappingRepository.saveAll(tagMappings);
+        //레포지토리에 생성한 객체 저장
+        postRepository.save(post);
 
-        savedPost.setTags(tagMappings);
-
-        // Post 저장 (최종적으로 한 번만 저장)
-        return PostDTO.Response.fromEntity(savedPost);
+        // postDTO를 저장
+        return PostDTO.Response.fromEntity(post);
     }
 
 
+    @Transactional(readOnly = true)
     public PostDTO.Response findById(Long id) {
         Optional<Post> optionalPost = postRepository.findById(id);
-        if (optionalPost.isPresent()){
+        if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
             return PostDTO.Response.fromEntity(post);
+        } else {
+            throw new RuntimeException("Post not found");
         }
-        else throw new RuntimeException("Post not found");
     }
 
     @Transactional
-    public void updateHits(Long id){ //조회수 업로드
+    public void updateHits(Long id) {
         postRepository.updateHits(id);
     }
 
@@ -144,7 +136,6 @@ public class PostService {
     public PostDTO.Response saveTempPost(Long id) { //임시저장 게시물 저장
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("cannot find post"));
-        post.setStatus("saved");
         Post savedPost = postRepository.save(post);
         return PostDTO.Response.fromEntity(savedPost);
     }
