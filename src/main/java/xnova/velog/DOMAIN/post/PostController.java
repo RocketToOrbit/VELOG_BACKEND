@@ -59,13 +59,13 @@ public class PostController {
         PostDTO savedTempPost = postService.saveTempPost(id);
         model.addAttribute("post", savedTempPost);
         return "detail";
-    }
-
-    @GetMapping("/delete/{id}") //게시판 삭제
-    public String deletePost(@PathVariable("id") Long id){
-        postService.delete(id);
-        return "redirect:/post";
     }*/
+
+    @DeleteMapping("/delete/{id}") //게시판 삭제
+    public ResponseEntity<?> deletePost(@PathVariable Long id){
+        postService.deletePost(id);
+        return ResponseEntity.noContent().build();
+    }
 
 
 

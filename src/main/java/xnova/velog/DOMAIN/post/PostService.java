@@ -11,7 +11,6 @@ import xnova.velog.Entity.Tag;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -20,8 +19,6 @@ public class PostService {
     @Autowired
     private PostRepository postRepository;
     @Autowired
-    private TagRepository tagRepository;
-    @Autowired
     private MemberRepository memberRepository;
     @Autowired
     private TagService tagService;
@@ -29,12 +26,12 @@ public class PostService {
     //게시물 저장
     @Transactional
     public PostDTO.Response savePost(PostDTO.Request postRequest) {
-        // 상태 값 검증 - 상태는 저장이거나 임시 저장이어야 한다.
+        // 상태 값 검증 - 상태는 저장이거나 임시 저장이어야 함
         if (postRequest.getStatus() == null) {
             throw new IllegalArgumentException("Status cannot be null");
         }
 
-        // 회원 정보 조회 및 설정 - 없어도 무방
+        // 회원 정보 조회 및 설정
         Member member = memberRepository.findById(postRequest.getMemberId())
                 .orElseThrow(() -> new RuntimeException("cannot find member"));
 
@@ -51,6 +48,7 @@ public class PostService {
 
         //태그 목록을 해당 게시글에 저장
         List<Tag> tags = tagService.saveTagsWithPost(post, postRequest.getTags());
+
         //태그들을 하나씩 게시글에 저장
         tags.forEach(post::addTag);
 
@@ -83,7 +81,7 @@ public class PostService {
 
 
     //게시판 업데이트 : 기존의 내용을 불러옴(아이디로 찾기) -> 새로운 내용을 입력
-    // -> 새로운 내용을 전달받아서 다시 저장(set)
+    // -> 새로운 내용을 전달받아서 다시 저장
     @Transactional
     public PostDTO.Response updatePost(Long id, PostDTO.Request postRequest) {
         //기존의 게시물을 불러오기
@@ -118,12 +116,13 @@ public class PostService {
     }
 
 
-
+    //이게 과연 필요할까?
     public List<PostDTO.Response> findAllTempPosts(){ //임시저장 게시물 목록 확인
         List<Post> posts = postRepository.findByStatus("temp");
         return posts.stream().map(PostDTO.Response::fromEntity).collect(Collectors.toList());
     }
 
+    //이게 과연 필요할까?
     /*public PostDTO findTempPostById(Long id){ //임시저장 게시물 내용 받기
         Post post = postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("cannot find post"));
@@ -133,6 +132,7 @@ public class PostService {
         return PostDTO.toPostDTO(post);
     }*/
 
+    //이것도 필요할지?
     @Transactional
     public PostDTO.Response saveTempPost(Long id) { //임시저장 게시물 저장
         Post post = postRepository.findById(id)
@@ -141,7 +141,17 @@ public class PostService {
         return PostDTO.Response.fromEntity(savedPost);
     }
 
-    public void delete(Long id){ //삭제
-        postRepository.deleteById(id);
+
+
+    //게시물 삭제 - 태그도 함께 삭제하도록 작성
+    @Transactional
+    public void deletePost(Long id){
+        //삭제
+        Post post = postRepository.findById(id)
+                        .orElseThrow(() -> new RuntimeException("cannot find post"));
+
+        tagService.deleteTags(post);
+
+        postRepository.delete(post);
     }
 }

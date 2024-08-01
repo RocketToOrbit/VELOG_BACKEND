@@ -47,4 +47,12 @@ public class TagService {
 
         return tagRepository.saveAll(newTags);
     }
+
+    @Transactional
+    public void deleteTags(Post post){
+        List<Tag> tags = post.getTags();
+        if (tags != null && !tags.isEmpty()) {
+            tagRepository.deleteAll(tags);
+        }
+    }
 }

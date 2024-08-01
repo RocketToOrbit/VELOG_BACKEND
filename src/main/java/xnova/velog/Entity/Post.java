@@ -6,9 +6,7 @@ import xnova.velog.DOMAIN.post.PostDTO;
 import xnova.velog.DOMAIN.post.TagDTO;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -46,10 +44,10 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private String status;
 
-    @OneToMany(mappedBy = "post")
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tag> tags = new ArrayList<>();
 
     /*@Column(nullable = false)

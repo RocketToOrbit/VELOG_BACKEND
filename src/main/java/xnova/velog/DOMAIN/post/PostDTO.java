@@ -6,12 +6,12 @@ import xnova.velog.Entity.Post;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Getter
 @Setter
 @NoArgsConstructor
+
 //데이터를 받아올 땐 DTO로 받아옴
 public class PostDTO {
 
