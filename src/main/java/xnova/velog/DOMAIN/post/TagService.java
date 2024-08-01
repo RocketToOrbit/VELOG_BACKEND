@@ -10,6 +10,7 @@ import xnova.velog.DOMAIN.post.TagDTO;
 import xnova.velog.DOMAIN.post.TagRepository;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,15 +18,6 @@ import java.util.stream.Collectors;
 public class TagService {
     @Autowired
     private final TagRepository tagRepository;
-
-    /*@Transactional
-    public List<Tag> saveTags(List<TagDTO.Request> tagRequest) { // 새로 추가된 메서드
-        List<Tag> tags = tagRequest.stream()
-                .map(tagDTO -> new Tag(null, tagDTO.getTagName()))
-                .collect(Collectors.toList());
-
-        return tagRepository.saveAll(tags);
-    }*/
 
     @Transactional
     public List<Tag> saveTagsWithPost(Post post, List<TagDTO.Request> tagRequest) {
@@ -37,5 +29,22 @@ public class TagService {
                 .collect(Collectors.toList());
 
         return tagRepository.saveAll(tags);
+    }
+
+    @Transactional
+    public List<Tag> updateTagWithPost(Post post, List<TagDTO.Request> tagRequest) {
+        Set<String> existingTagNames = post.getTags().stream()
+                .map(Tag::getTagName)
+                .collect(Collectors.toSet());
+
+        List<Tag> newTags = tagRequest.stream()
+                .map(tagDTO -> Tag.builder()
+                        .tagName(tagDTO.getTagName())
+                        .post(post)
+                        .build())
+                .filter(tag -> !existingTagNames.contains(tag.getTagName()))
+                .collect(Collectors.toList());
+
+        return tagRepository.saveAll(newTags);
     }
 }

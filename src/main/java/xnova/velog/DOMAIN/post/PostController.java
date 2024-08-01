@@ -22,7 +22,7 @@ public class PostController {
     @GetMapping("/{id}") //게시판 상세 조회
     public ResponseEntity<PostDTO.Response> findById(@PathVariable Long id) {
         postService.updateHits(id); //조회수 업데이트
-        PostDTO.Response postDTO = postService.findById(id);
+        PostDTO.Response postDTO = postService.findPost(id);
         return ResponseEntity.ok(postDTO);
     }
 
@@ -32,13 +32,13 @@ public class PostController {
         model.addAttribute("post", postDTO);
         return "modifying";
     }*/
+    //필요 없을듯 함
 
-    /*@PostMapping("/update") //게시판 수정하기
-    public String updatePost(@RequestBody PostDTO postDTO, Model model) {
-        PostDTO post = postService.update(postDTO);
-        model.addAttribute("post", post);
-        return "detail";
-    }*/
+    @PostMapping("/update/{id}") //게시판 수정하기
+    public ResponseEntity<?> updatePost(@PathVariable Long id, @RequestBody PostDTO.Request postDTO) throws IOException {
+        PostDTO.Response updatedPost = postService.updatePost(id, postDTO);
+        return ResponseEntity.ok(updatedPost);
+    }
 
     /*@GetMapping("/tempPosts") //임시저장된 게시물 목록 확인하기
     public String getTempPosts(Model model) {

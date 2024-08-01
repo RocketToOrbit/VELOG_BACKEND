@@ -26,19 +26,17 @@ public class PostService {
     @Autowired
     private TagService tagService;
 
+    //게시물 저장
     @Transactional
     public PostDTO.Response savePost(PostDTO.Request postRequest) {
-        // 상태 값 검증
+        // 상태 값 검증 - 상태는 저장이거나 임시 저장이어야 한다.
         if (postRequest.getStatus() == null) {
             throw new IllegalArgumentException("Status cannot be null");
         }
 
-        // 회원 정보 조회 및 설정 - 없어도 무방할듯
+        // 회원 정보 조회 및 설정 - 없어도 무방
         Member member = memberRepository.findById(postRequest.getMemberId())
                 .orElseThrow(() -> new RuntimeException("cannot find member"));
-
-        //태그를 저장
-        //List<Tag> tags = tagService.saveTags(postRequest.getTags());
 
         //post 객체를 생성
         Post post = Post.builder()
@@ -50,13 +48,13 @@ public class PostService {
                 .hits(0)
                 .member(member)
                 .build();
-        //postRepository.save(post);
 
+        //태그 목록을 해당 게시글에 저장
         List<Tag> tags = tagService.saveTagsWithPost(post, postRequest.getTags());
+        //태그들을 하나씩 게시글에 저장
         tags.forEach(post::addTag);
 
-
-        //레포지토리에 생성한 객체 저장
+        //레포지토리에 생성한 객체 저장 - 전체 게시글 저장
         postRepository.save(post);
 
         // postDTO를 저장
@@ -64,8 +62,10 @@ public class PostService {
     }
 
 
+    //조회를 위한 로직
+    //아이디를 통해 게시물을 찾아서 데이터를 전달해줌
     @Transactional(readOnly = true)
-    public PostDTO.Response findById(Long id) {
+    public PostDTO.Response findPost(Long id) {
         Optional<Post> optionalPost = postRepository.findById(id);
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
@@ -75,48 +75,49 @@ public class PostService {
         }
     }
 
+    //조회수 업데이트
     @Transactional
     public void updateHits(Long id) {
         postRepository.updateHits(id);
     }
 
-    /*@Transactional
-    public PostDTO update(PostDTO postDTO) { //게시판 업로드
-        Post post = Post.toUpdatePost(postDTO);
-        postRepository.save(post);
-        return findById(postDTO.getPost_id()); //왜 이렇게 리턴하는지?
-    }*/
 
+    //게시판 업데이트 : 기존의 내용을 불러옴(아이디로 찾기) -> 새로운 내용을 입력
+    // -> 새로운 내용을 전달받아서 다시 저장(set)
     @Transactional
     public PostDTO.Response updatePost(Long id, PostDTO.Request postRequest) {
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Post not found"));
+        //기존의 게시물을 불러오기
+        Post existingPost = postRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("cannot find post"));
 
-        post = Post.builder()
+        //회원인지 확인 -> 그래야 나중에 member를 response 해줄 수 있음
+        Member member = memberRepository.findById(postRequest.getMemberId())
+                .orElseThrow(() -> new RuntimeException("cannot find member"));
+
+        //새로 입력된 태그를 저장하고, 게시물과 함께 매핑하는 작업을
+        // tagService에서 수행
+        tagService.updateTagWithPost(existingPost, postRequest.getTags());
+
+        //새롭게 수정된 내용에 맞게 객체 재설정
+        Post updatedPost = Post.builder()
+                .postId(existingPost.getPostId())
+                .member(member)
+                .hits(existingPost.getHits())
+                .tags(existingPost.getTags())
+                .likes(existingPost.getLikes())
                 .title(postRequest.getTitle())
                 .imageUrl(postRequest.getImageUrl())
                 .content(postRequest.getContent())
                 .status(postRequest.getStatus())
                 .build();
 
-        /*List<TagMapping> existingTags = post.getTags();
+        //내용 저장
+        postRepository.save(updatedPost);
 
-        List<Tag> newTags = postRequest.getTags().stream()
-                .map(tagDTO -> tagRepository.findById(tagDTO.getId())
-                        .orElseGet(() -> new Tag(null, tagDTO.getTagName())))
-                .collect(Collectors.toList());
-
-        List<TagMapping> newTagMappings = newTags.stream()
-                .map(tag -> new TagMapping(post, tag))
-                .collect(Collectors.toList());
-
-        tagMappingRepository.deleteAll(existingTags);
-        tagMappingRepository.saveAll(newTagMappings);
-        post.setTags(newTagMappings);
-
-        return PostDTO.Response.fromEntity(postRepository.save(post));*/
-        return PostDTO.Response.fromEntity(postRepository.save(post));
+        return PostDTO.Response.fromEntity(updatedPost);
     }
+
+
 
     public List<PostDTO.Response> findAllTempPosts(){ //임시저장 게시물 목록 확인
         List<Post> posts = postRepository.findByStatus("temp");
