@@ -60,8 +60,8 @@ public class PostService {
     }
 
 
-    //조회를 위한 로직
-    //아이디를 통해 게시물을 찾아서 데이터를 전달해줌
+    //조회
+    //아이디를 통해 게시물을 찾아서 데이터를 전달
     @Transactional(readOnly = true)
     public PostDTO.Response findPost(Long id) {
         Optional<Post> optionalPost = postRepository.findById(id);
@@ -116,10 +116,20 @@ public class PostService {
     }
 
 
-    //이게 과연 필요할까?
-    public List<PostDTO.Response> findAllTempPosts(){ //임시저장 게시물 목록 확인
+    //임시저장 게시물 목록 확인
+    public List<PostDTO.Response> findAllTempPosts(){
         List<Post> posts = postRepository.findByStatus("temp");
-        return posts.stream().map(PostDTO.Response::fromEntity).collect(Collectors.toList());
+        return posts.stream()
+                .map(PostDTO.Response::fromEntity)
+                .collect(Collectors.toList());
+    }
+
+    //저장 게시물 목록 확인
+    public List<PostDTO.Response> findAllPosts(){
+        List<Post> posts = postRepository.findByStatus("saved");
+        return posts.stream()
+                .map(PostDTO.Response::fromEntity)
+                .collect(Collectors.toList());
     }
 
     //이게 과연 필요할까?
@@ -132,12 +142,21 @@ public class PostService {
         return PostDTO.toPostDTO(post);
     }*/
 
-    //이것도 필요할지?
+
+    //임시저장 게시물 저장
+    //update와 어떤 차이가 있는지 모르겠다 - 결국 입력받는 값 중에 status 값이 바뀌는 것인데,
+    //saved로 바뀌면 임시 저장된 게시물에서 없어지는 거 아닌가?
     @Transactional
-    public PostDTO.Response saveTempPost(Long id) { //임시저장 게시물 저장
-        Post post = postRepository.findById(id)
+    public PostDTO.Response saveTempPost(Long id) {
+        Post tempPost = postRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("cannot find post"));
-        Post savedPost = postRepository.save(post);
+
+        Post savedPost = tempPost.toBuilder()
+                .status("saved")
+                .build();
+
+        postRepository.save(savedPost);
+
         return PostDTO.Response.fromEntity(savedPost);
     }
 
@@ -154,4 +173,6 @@ public class PostService {
 
         postRepository.delete(post);
     }
+
+
 }

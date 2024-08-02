@@ -14,7 +14,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor //기본 생성자를 자동으로 생성
 @AllArgsConstructor //모든 필드를 인수로 가지는 생성자 자동 생성
 //모든 필드를 초기화하는 생성자가 필요할 경우 사용
-@Builder //빌더 패턴은 객체 생성 시 필수값과 선택값을 분리하여 객체를 유연하게 생성할 수 있게 함.
+@Builder(toBuilder = true)
+//빌더 패턴은 객체 생성 시 필수값과 선택값을 분리하여 객체를 유연하게 생성할 수 있게 함.
 @Table(name = "post")
 public class Post extends BaseEntity {
     @Id

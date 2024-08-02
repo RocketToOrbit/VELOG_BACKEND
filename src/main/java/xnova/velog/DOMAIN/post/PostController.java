@@ -40,33 +40,31 @@ public class PostController {
         return ResponseEntity.ok(updatedPost);
     }
 
-    /*@GetMapping("/tempPosts") //임시저장된 게시물 목록 확인하기
-    public String getTempPosts(Model model) {
-        List<PostDTO> tempPosts = postService.findAllTempPosts();
-        model.addAttribute("tempPosts", tempPosts);
-        return "tempPostList";
+
+    @GetMapping("/tempPosts") //임시저장된 게시물 목록 확인하기
+    public ResponseEntity<?> getTempPosts() {
+        List<PostDTO.Response> tempPosts = postService.findAllTempPosts();
+        return ResponseEntity.ok(tempPosts);
     }
 
-    @GetMapping("/tempPost/{id}")
-    public String getTempPostById(@PathVariable Long id, Model model) {
-        PostDTO postDTO = postService.findById(id);
-        model.addAttribute("post", postDTO);
-        return "tempDetail";
+    @GetMapping("/savedPosts") //저장된 게시물 목록 확인하기
+    public ResponseEntity<?> getPosts() {
+        List<PostDTO.Response> savedPosts = postService.findAllPosts();
+        return ResponseEntity.ok(savedPosts);
     }
 
-    @PostMapping("/saveTempPost") //임시저장된 게시물 저장하기
-    public String tempPostSave(@RequestBody Long id, Model model) {
-        PostDTO savedTempPost = postService.saveTempPost(id);
-        model.addAttribute("post", savedTempPost);
-        return "detail";
-    }*/
+
+    //임시저장된 게시물 저장하기
+    //그러나 그냥 수정해서 상태를 변경해도 똑같은 결과가 나옴
+    @PostMapping("/saveTempPost/{id}")
+    public ResponseEntity<?> tempPostSave(@PathVariable Long id) {
+        PostDTO.Response savedPost = postService.saveTempPost(id);
+        return ResponseEntity.ok(savedPost);
+    }
 
     @DeleteMapping("/delete/{id}") //게시판 삭제
     public ResponseEntity<?> deletePost(@PathVariable Long id){
         postService.deletePost(id);
         return ResponseEntity.noContent().build();
     }
-
-
-
 }
