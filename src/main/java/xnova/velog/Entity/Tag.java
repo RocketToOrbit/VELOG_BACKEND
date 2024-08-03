@@ -6,8 +6,8 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED) // 추가된 어노테이션
-@AllArgsConstructor // 추가된 어노테이션
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Builder
 @Getter
 @Setter
