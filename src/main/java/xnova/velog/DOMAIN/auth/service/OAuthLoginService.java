@@ -2,14 +2,14 @@ package xnova.velog.DOMAIN.auth.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xnova.velog.DOMAIN.auth.MemberRepository;
 import xnova.velog.DOMAIN.auth.jwt.AuthTokens;
 import xnova.velog.DOMAIN.auth.jwt.AuthTokensGenerator;
-import xnova.velog.DOMAIN.auth.oauth2.OAuthInfoResponse;
-import xnova.velog.DOMAIN.auth.oauth2.OAuthLoginParams;
-import xnova.velog.DOMAIN.auth.oauth2.RequestOAuthInfoService;
+import xnova.velog.DOMAIN.auth.jwt.JwtTokenProvider;
+import xnova.velog.DOMAIN.auth.oauth2.*;
 import xnova.velog.Entity.Member;
 
 @Slf4j
@@ -21,6 +21,9 @@ public class OAuthLoginService {
     private final MemberRepository memberRepository; // 회원 정보를 관리하는 저장소
     private final AuthTokensGenerator authTokensGenerator; // AuthTokens을 얻음
     private final RequestOAuthInfoService requestOAuthInfoService; //사용자 정보를 얻음
+    private final KakaoApiClient kakaoApiClient;
+    private final NaverApiClient naverApiClient;
+    private final JwtTokenProvider jwtTokenProvider;
 
     //
     public AuthTokens login(OAuthLoginParams params) {
@@ -51,4 +54,16 @@ public class OAuthLoginService {
             throw e;
         }
     }
+
+    public void logout(String accessToken, Member.OAuthProvider provider) {
+        jwtTokenProvider.invalidateToken(accessToken);
+
+        if (provider == Member.OAuthProvider.KAKAO) {
+            kakaoApiClient.logout(accessToken);
+        }
+    }
+//        } else if (provider == Member.OAuthProvider.NAVER) {
+//            naverApiClient.logout(accessToken);
+//        }
+
 }

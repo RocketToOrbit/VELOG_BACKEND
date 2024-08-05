@@ -11,12 +11,14 @@ import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Component
 // JWT(Json Web Token)를 생성하고, 이를 검증하며, 토큰에서 정보를 추출하는 기능
 public class JwtTokenProvider {
 
     private final Key key;
+    private final ConcurrentHashMap<String, Date> tokenBlacklist = new ConcurrentHashMap<>();
 
     public JwtTokenProvider(@Value("${jwt.secretKey}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -47,4 +49,16 @@ public class JwtTokenProvider {
             return e.getClaims();
         }
     }
+    public void invalidateToken(String accessToken) {
+        Date expiration = parseClaims(accessToken).getExpiration();
+        tokenBlacklist.put(accessToken, expiration);
+    }
+//
+//    public boolean isTokenValid(String accessToken) {
+//        if (tokenBlacklist.containsKey(accessToken)) {
+//            Date expiration = tokenBlacklist.get(accessToken);
+//            return new Date().before(expiration);
+//        }
+//        return true;
+//    }
 }

@@ -2,6 +2,7 @@ package xnova.velog.DOMAIN.auth.oauth2;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Component;
@@ -10,12 +11,14 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import xnova.velog.Entity.Member;
 
+
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class KakaoApiClient implements OAuthApiClient {
 
     private static final String GRANT_TYPE = "authorization_code";
+    private static final String LOGOUT_URL = "https://kapi.kakao.com/v1/user/logout";
 
     @Value("${kakao.url.auth}") // @Value: application.yml 파일에서 설정된 값을 Java 클래스에서 쉽게 사용
     private String authUrl;
@@ -25,6 +28,9 @@ public class KakaoApiClient implements OAuthApiClient {
 
     @Value("${kakao.client-id}")
     private String clientId;
+
+    @Value("${kakao.logout-redirect-uri}")
+    private String logoutRedirectUri;
 
     private final RestTemplate restTemplate;
 
@@ -78,5 +84,19 @@ public class KakaoApiClient implements OAuthApiClient {
         // KakaoInfoResponse 객체 반환
         return restTemplate.postForObject(url, request, KakaoInfoResponse.class);
 
+    }
+    // 카카오톡 로그아웃 요청
+    public void logout(String accessToken) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+        headers.set("Authorization", "Bearer " + accessToken);
+
+        HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(new LinkedMultiValueMap<>(), headers);
+
+        ResponseEntity<String> response = restTemplate.postForEntity(LOGOUT_URL, entity, String.class);
+
+        if (response.getStatusCode() != HttpStatus.OK) {
+            throw new RuntimeException("카카오 로그아웃 요청 실패: " + response.getStatusCode());
+        }
     }
 }

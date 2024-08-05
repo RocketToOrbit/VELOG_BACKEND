@@ -2,9 +2,7 @@ package xnova.velog.DOMAIN.auth.oauth2;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -16,7 +14,7 @@ import xnova.velog.Entity.Member;
 public class NaverApiClient implements OAuthApiClient {
 
     private static final String GRANT_TYPE = "authorization_code";
-
+    private static final String LOGOUT_URL = "https://nid.naver.com/oauth2.0/token?grant_type=delete&client_id={client_id}&client_secret={client_secret}&access_token={access_token}&service_provider=NAVER";
     @Value("${naver.url.auth}")
     private String authUrl;
 
@@ -70,4 +68,16 @@ public class NaverApiClient implements OAuthApiClient {
 
         return restTemplate.postForObject(url, request, NaverInfoResponse.class);
     }
+
+//    public void logout(String accessToken) {
+//        String url = LOGOUT_URL.replace("{client_id}", clientId)
+//                .replace("{client_secret}", clientSecret)
+//                .replace("{access_token}", accessToken);
+//
+//        ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+//
+//        if (response.getStatusCode() != HttpStatus.OK) {
+//            throw new RuntimeException("네이버 로그아웃 요청 실패: " + response.getStatusCode());
+//        }
+//    }
 }
