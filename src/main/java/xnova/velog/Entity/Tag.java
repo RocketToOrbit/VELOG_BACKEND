@@ -21,12 +21,4 @@ public class Tag extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "post_id")
     private Post post;
-
-
-    /*@Builder
-    public Tag(Long id, String tagName, Post post) {
-        this.id = id;
-        this.tagName = tagName;
-        this.post = post;
-    }*/
 }

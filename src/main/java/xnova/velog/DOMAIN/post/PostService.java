@@ -132,16 +132,6 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    //이게 과연 필요할까?
-    /*public PostDTO findTempPostById(Long id){ //임시저장 게시물 내용 받기
-        Post post = postRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("cannot find post"));
-        if (!"temp".equals(post.getStatus())){
-            throw  new RuntimeException("Post is not in temp status");
-        }
-        return PostDTO.toPostDTO(post);
-    }*/
-
 
     //임시저장 게시물 저장
     //update와 어떤 차이가 있는지 모르겠다 - 결국 입력받는 값 중에 status 값이 바뀌는 것인데,

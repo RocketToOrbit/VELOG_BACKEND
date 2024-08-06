@@ -26,14 +26,6 @@ public class PostController {
         return ResponseEntity.ok(postDTO);
     }
 
-    /*@GetMapping("/update/{id}") //수정된 게시판 보기
-    public String updatedPost(@PathVariable("id") Long id, Model model){
-        PostDTO postDTO = postService.findById(id); //수정된 정보를 DTO에 담아옴
-        model.addAttribute("post", postDTO);
-        return "modifying";
-    }*/
-    //필요 없을듯 함
-
     @PostMapping("/update/{id}") //게시판 수정하기
     public ResponseEntity<?> updatePost(@PathVariable Long id, @RequestBody PostDTO.Request postDTO) throws IOException {
         PostDTO.Response updatedPost = postService.updatePost(id, postDTO);
@@ -57,8 +49,9 @@ public class PostController {
     //임시저장된 게시물 저장하기
     //그러나 그냥 수정해서 상태를 변경해도 똑같은 결과가 나옴
     @PostMapping("/saveTempPost/{id}")
-    public ResponseEntity<?> tempPostSave(@PathVariable Long id) {
-        PostDTO.Response savedPost = postService.saveTempPost(id);
+    public ResponseEntity<?> tempPostSave(@PathVariable Long id, @RequestBody PostDTO.Request postDTO) throws IOException {
+        //PostDTO.Response savedPost = postService.saveTempPost(id);
+        PostDTO.Response savedPost = postService.updatePost(id, postDTO);
         return ResponseEntity.ok(savedPost);
     }
 
