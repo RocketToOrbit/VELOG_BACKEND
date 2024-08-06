@@ -25,7 +25,7 @@ public class Post extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "member_id", nullable = false)
-    private Member member;
+    private Member member; // 게시물 작성자
 
     @Column(nullable = false)
     private String title;
@@ -45,14 +45,17 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private String status;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private List<Comment> comments;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
+    // 게시물에 달린 댓글 목록
+    // cascade = CascadeType.ALL: 게시물 엔티티에 대한 모든 작업(삽입, 업데이트, 삭제 등)이 댓글 엔티티에도 전파됨.
+    // orphanRemoval = true: 게시물 엔티티와의 관계가 끊어진 댓글 엔티티는 자동으로 삭제됨.
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tag> tags = new ArrayList<>();
 
     @Column(nullable = false)
-    private String boardTitle;
+    private String boardTitle; // 게시판 제목
 
     @Builder
     public Post(Long postId, String title, String imageUrl,
