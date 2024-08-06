@@ -3,16 +3,13 @@ package xnova.velog.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.Set;
-
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED) // 추가된 어노테이션
+@AllArgsConstructor // 추가된 어노테이션
 @Builder
 @Getter
 @Setter
 @Entity
-@Table(name = "tag")
+@Table(name = "tag", uniqueConstraints = {@UniqueConstraint(columnNames = {"tagName"})})
 public class Tag extends BaseEntity {
     @Id
     @GeneratedValue
@@ -22,11 +19,7 @@ public class Tag extends BaseEntity {
     @Column(name = "tagName")
     private String tagName;
 
-    @OneToMany(mappedBy = "tag")
-    private Set<TagMapping> tagMapping = new HashSet<>();
-
-    public Tag(Long id, String tagName) {
-        this.id = id;
-        this.tagName = tagName;
-    }
+    @ManyToOne
+    @JoinColumn(name = "post_id")
+    private Post post;
 }
