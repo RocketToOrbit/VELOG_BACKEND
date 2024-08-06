@@ -24,7 +24,7 @@ public class Post extends BaseEntity {
     private Long postId;
 
     @ManyToOne
-    @JoinColumn(name = "member_id")
+    @JoinColumn(name = "member_id", nullable = false)
     private Member member;
 
     @Column(nullable = false)
@@ -51,8 +51,8 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tag> tags = new ArrayList<>();
 
-    /*@Column(nullable = false)
-    private String boardTitle;*/
+    @Column(nullable = false)
+    private String boardTitle;
 
     @Builder
     public Post(Long postId, String title, String imageUrl,
