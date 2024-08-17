@@ -1,23 +1,26 @@
-HELP.md
+# Caches and output directories
 caches/
-/out
-/build
+out/
+bin/
+
+# Daemon and IDE related files
 daemon/
 .idea/
 ide/
-jdks/
-native/
-src/main/generated/
-.idea/modules.xml
+.jdks/
+.vscode/
 
+# Ignore generated files
+src/main/generated/
+
+# Gradle specific files
+.gradle/
+.build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
 
-### BUILD ###
-.gradle/
-
-### STS ###
+# STS (Spring Tool Suite) specific files
 .apt_generated
 .classpath
 .factorypath
@@ -25,24 +28,17 @@ src/main/generated/
 .settings
 .springBeans
 .sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
 
-### IntelliJ IDEA ###
-.idea
-*.iws`
+# IntelliJ IDEA specific files
+*.iws
 *.iml
 *.ipr
 !**/src/main/**/out/
 !**/src/test/**/out/
 
-### NetBeans ###
+# NetBeans specific files
 /nbproject/private/
 /nbbuild/
 /dist/
 /nbdist/
 /.nb-gradle/
-
-### VS Code ###
-.vscode/

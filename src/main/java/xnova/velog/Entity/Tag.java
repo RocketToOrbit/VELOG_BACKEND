@@ -7,7 +7,6 @@ import lombok.*;
 @AllArgsConstructor // 추가된 어노테이션
 @Builder
 @Getter
-@Setter
 @Entity
 @Table(name = "tag", uniqueConstraints = {@UniqueConstraint(columnNames = {"tagName"})})
 public class Tag extends BaseEntity {
