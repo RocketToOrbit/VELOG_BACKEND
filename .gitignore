@@ -1,7 +1,7 @@
 HELP.md
 caches/
 /out
-/build
+
 daemon/
 .idea/
 ide/
@@ -16,6 +16,7 @@ src/main/generated/
 
 ### BUILD ###
 .gradle/
+.build/
 
 ### STS ###
 .apt_generated
