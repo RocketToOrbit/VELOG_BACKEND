@@ -1,10 +1,9 @@
 package xnova.velog.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import xnova.velog.DOMAIN.post.PostDTO;
+import xnova.velog.DOMAIN.post.TagDTO;
 
 import java.util.ArrayList;
 import java.util.List;
