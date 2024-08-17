@@ -2,7 +2,6 @@ package xnova.velog.DOMAIN.post;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -11,7 +10,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/post")
 @RequiredArgsConstructor
-public class PostController {
+public class PostController2 {
     private final PostService postService;
 
     @PostMapping("/save") //게시물 저장하기
