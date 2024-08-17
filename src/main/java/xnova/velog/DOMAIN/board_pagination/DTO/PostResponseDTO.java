@@ -2,8 +2,8 @@ package xnova.velog.DOMAIN.board_pagination.DTO;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,6 +13,7 @@ public class PostResponseDTO<T> {
     private String status; // 응답 상태 (예: 성공, 실패)
     private String message; // 응답 메시지
     private T data; // 실제 데이터 (제네릭 타입)
+    private Long nextCursor; // 다음 커서를 제공하기 위한 필드 (커서 기반 페이지네이션용)
 
     @Getter
     @Setter
@@ -30,12 +31,7 @@ public class PostResponseDTO<T> {
         @AllArgsConstructor
         @Builder
         public static class PaginationDTO {
-            private int totalPages; // 총 페이지 수
             private long totalElements; // 총 요소 수
-            private int currentPage; // 현재 페이지 번호
-            private int pageSize; // 페이지 크기
-            private boolean isFirstPage; // 첫 번째 페이지 여부
-            private boolean isLastPage; // 마지막 페이지 여부
         }
 
         @Getter
@@ -45,8 +41,20 @@ public class PostResponseDTO<T> {
         @Builder
         public static class SortDTO {
             private boolean isSorted; // 정렬 여부
-            private boolean isUnsorted; // 정렬되지 않은 여부
-            private boolean isEmpty; // 정렬 정보가 비어있는지 여부
+            private boolean isEmpty; // 데이터가 비어있는지 여부
         }
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class PostSummaryDTO {
+        private Long postId;
+        private String title;
+        private Long memberId;
+        private String status;
+        private LocalDateTime createAt;
     }
 }

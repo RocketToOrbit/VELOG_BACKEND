@@ -18,4 +18,13 @@ public abstract class BaseEntity {
     @UpdateTimestamp
     @Column
     private LocalDateTime updatedAt;
+
+    // createAt 필드에 대한 게터 메서드
+    public LocalDateTime getCreateAt() {
+        return createAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }

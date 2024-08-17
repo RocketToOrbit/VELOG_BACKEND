@@ -22,7 +22,7 @@ public class CommentService {
     @Autowired
     private PostRepository postRepository; // 게시물 리포지토리 주입
 
-    // 특정 게시물의 댓글 목록을 가져오는 메서드
+    /*// 특정 게시물의 댓글 목록을 가져오는 메서드
     public PostResponseDTO<List<Comment>> getCommentsByPostId(Long postId) {
         List<Comment> comments = commentRepository.findByPostPostId(postId);
         return new PostResponseDTO<>("success", "Comments retrieved successfully", comments);
@@ -57,5 +57,5 @@ public class CommentService {
     public void deleteComment(Long postId, Long commentId) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(() -> new RuntimeException("Comment not found"));
         commentRepository.delete(comment);
-    }
+    }*/
 }
