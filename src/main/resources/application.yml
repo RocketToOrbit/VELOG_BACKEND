@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://velog-db.crquyyy2e2vz.us-east-2.rds.amazonaws.com:5432/velogdb
     username: postgres
-    password: 12345678
+    password: velog-nova
     driver-class-name: org.postgresql.Driver
 
   jpa:
