@@ -1,6 +1,7 @@
 package xnova.velog.Entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -17,4 +18,13 @@ public abstract class BaseEntity {
     @UpdateTimestamp
     @Column
     private LocalDateTime updatedAt;
+
+    // createAt 필드에 대한 게터 메서드
+    public LocalDateTime getCreateAt() {
+        return createAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
 }

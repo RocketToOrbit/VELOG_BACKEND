@@ -23,7 +23,7 @@ public class AuthTokensGenerator {
 
         String subject = memberId.toString(); // 멤버 ID를 문자열로 변환하여 토큰의 주체로 설정
         String accessToken = jwtTokenProvider.generate(subject, accessTokenExpiredAt); //JWT 토큰 프로바이더를 사용하여 액세스 토큰을 생성
-        String refreshToken = jwtTokenProvider.generate(subject, refreshTokenExpiredAt); // JWT 토큰 프로바이더를 사용하여 리프레시 토큰을 생성s
+        String refreshToken = jwtTokenProvider.generate(subject, refreshTokenExpiredAt); // JWT 토큰 프로바이더를 사용하여 리프레시 토큰을 생성
 
         return AuthTokens.of(accessToken, refreshToken, BEARER_TYPE, ACCESS_TOKEN_EXPIRE_TIME / 1000L);
     }
