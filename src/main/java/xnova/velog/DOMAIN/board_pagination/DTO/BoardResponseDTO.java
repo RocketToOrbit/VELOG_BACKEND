@@ -9,7 +9,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PostResponseDTO<T> {
+public class BoardResponseDTO<T> {
     private String status; // 응답 상태 (예: 성공, 실패)
     private String message; // 응답 메시지
     private T data; // 실제 데이터 (제네릭 타입)
@@ -50,7 +50,7 @@ public class PostResponseDTO<T> {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class PostSummaryDTO {
+    public static class BoardSummaryDTO {
         private Long postId;
         private String title;
         private Long memberId;

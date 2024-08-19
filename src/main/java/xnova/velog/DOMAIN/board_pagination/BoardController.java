@@ -1,24 +1,20 @@
 package xnova.velog.DOMAIN.board_pagination;
 
 import org.springframework.web.bind.annotation.*;
-import xnova.velog.DOMAIN.board_pagination.DTO.PostResponseDTO;
-import xnova.velog.DOMAIN.comment.CommentService;
-import xnova.velog.Entity.Comment;
-import xnova.velog.Entity.Post;
-import java.util.List;
+import xnova.velog.DOMAIN.board_pagination.DTO.BoardResponseDTO;
 
 @RestController
-public class PostController {
+public class BoardController {
 
     //private final CommentService commentService; // 댓글 서비스
-    private final PostService postService;
+    private final BoardService postService;
 
-    public PostController(PostService postService) {
+    public BoardController(BoardService postService) {
         this.postService = postService;
     }
 
     @GetMapping("/posts")
-    public PostResponseDTO<PostResponseDTO.PageResponseDTO<PostResponseDTO.PostSummaryDTO>> getPosts(
+    public BoardResponseDTO<BoardResponseDTO.PageResponseDTO<BoardResponseDTO.BoardSummaryDTO>> getPosts(
             @RequestParam(required = false) Long cursor,
             @RequestParam(defaultValue = "30") int size) {
         return postService.getPosts(cursor, size);

@@ -2,12 +2,7 @@ package xnova.velog.DOMAIN.comment;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import xnova.velog.DOMAIN.board_pagination.DTO.PostResponseDTO;
-import xnova.velog.DOMAIN.board_pagination.PostRepository;
-import xnova.velog.Entity.Comment;
-import xnova.velog.Entity.Post;
-
-import java.util.List;
+import xnova.velog.DOMAIN.board_pagination.BoardRepository;
 
 @Service
 public class CommentService {
@@ -20,7 +15,7 @@ public class CommentService {
     private CommentRepository commentRepository; // 댓글 리포지토리 주입
 
     @Autowired
-    private PostRepository postRepository; // 게시물 리포지토리 주입
+    private BoardRepository postRepository; // 게시물 리포지토리 주입
 
     /*// 특정 게시물의 댓글 목록을 가져오는 메서드
     public PostResponseDTO<List<Comment>> getCommentsByPostId(Long postId) {

@@ -10,7 +10,7 @@ import xnova.velog.Entity.Post;
 import java.util.List;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface BoardRepository extends JpaRepository<Post, Long> {
 
     // 최신순으로 게시물 목록을 조회하는 메서드
     // 커서 기반 페이지네이션을 위해 `createdAt` 필드를 기준으로 조회합니다.
